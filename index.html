@@ -1,12 +1,59 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>バーチャルアジト</title>
+
+  <style>
+    #map {
+      height: 400px;
+    }
+  </style>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
 </head>
+
 <body>
-  <p>バーチャルアジト</p>
+  <h1>バーチャルアジト</h1>
+  <div id="map"></div>
+  <script>
+
+    let latitude = 40.5098665;
+    let longitude = 141.4906441;
+    const latLong = [latitude, longitude]
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        latitude = position.coords.latitude
+        longitude = position.coords.longitude
+        var geo_text = "緯度:" + position.coords.latitude + "\n";
+        geo_text += "経度:" + position.coords.longitude + "\n";
+
+        // alert(geo_text);
+        console.log(geo_text)
+
+        var map = L.map('map').setView([latitude, longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([latitude, longitude]).addTo(map)
+          .bindPopup('！まだアジトは登録されていません！')
+          .openPopup();
+      });
+    }
+  </script>
 </body>
+
 </html>
